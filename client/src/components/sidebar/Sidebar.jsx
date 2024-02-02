@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 
 // Components
 import SidebarLinks from "./subComponents/SidebarLinks.jsx";
+import Language from "./subComponents/Language.jsx";
 
 // Constants
 const currentBgLogo = 1305;
@@ -18,14 +19,13 @@ const Sidebar = ({t}) => {
                     </h1>
                 </div>
                 <div className="w-64 h-64 absolute -z-10">
-                    <img className="absolute w-64 h-64" src={"./hsr/icon/character/" + currentBgLogo + ".png"}
-                         alt="BgLogo"></img>
-                    <div
-                        className="h-64 w-64 absolute bg-gradient-to-b from-transparent from-50% to-sidebarBg to-100%"></div>
+                    <img className="absolute w-64 h-64" src={"./hsr/icon/character/" + currentBgLogo + ".png"} alt="BgLogo"></img>
+                    <div className="h-64 w-64 absolute bg-gradient-to-b from-transparent from-50% to-sidebarBg to-100%"></div>
                 </div>
             </Link>
             <div className="flex flex-col p-5 overflow-y-auto h-full">
                 <SidebarLinks t={t}/>
+                <Language t={t}/>
             </div>
         </nav>
     )

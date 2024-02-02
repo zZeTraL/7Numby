@@ -13,7 +13,7 @@ i18n
         react: {useSuspense: true},
         debug: false,
         backend: {
-            loadPath: "./locales/{{lng}}.json",
+            loadPath: "./src/data/locales/{{lng}}.json",
         }
     }).then(() => {
     console.info("i18n initialized");

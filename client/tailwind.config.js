@@ -32,9 +32,6 @@ export default {
         12: "12",
         16: "16",
       },
-      backgroundImage: {
-        "characterBg": "url('./StarRailRes/icon/character/1001.png')",
-      }
     },
   },
   plugins: [],

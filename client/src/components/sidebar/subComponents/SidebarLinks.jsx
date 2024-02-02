@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
@@ -37,11 +37,15 @@ const sidebarLinks = [
 
 // Styled Components
 const StyledLink = styled(Link)`
-    &:hover {
-        opacity: 1;
-    }
+  background-color: ${(props) => props.currentLocation ? "#E94957" : null};
+  opacity: ${(props) => props.currentLocation ? 1 : .7};
+  &:hover {
+    opacity: 1;
+  }
 `;
 const SidebarLinks = ({t}) => {
+    const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
     return (
         <div className="flex flex-col grow-8 gap-4 overflow-y-auto z-10">
             {
@@ -50,16 +54,20 @@ const SidebarLinks = ({t}) => {
                         <StyledLink
                             key={index}
                             to={linkData.link}
+                            currentLocation={currentPath === linkData.link}
+                            onClick={() => setCurrentPath(linkData.link)}
                             className="flex flex-row opacity-70 items-center rounded-xl px-4 py-3 text-white no-underline duration-300 ease-in"
                         >
-
-                            <div className="flex mr-3 h-8 w-8">
-                                <img className="h-full" src={"./hsr/icon/sign/" + linkData.icon + ".png"} alt={linkData.key} />
+                            <div className="flex flex-row items-center">
+                                <img
+                                    src={"./hsr/icon/sign/" + linkData.icon + ".png"}
+                                    alt={linkData.key}
+                                    className="w-8 h-8 mr-3"
+                                />
+                                <span className="text-lg font-semibold tracking-wide leading-none">
+                                    {t(linkData.key)}
+                                </span>
                             </div>
-                            <span className="text-lg font-semibold leading-none tracking-wide">
-                                {t(linkData.key)}
-                            </span>
-
                         </StyledLink>
                     )
                 })
