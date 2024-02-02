@@ -1,0 +1,11 @@
+{
+  "sidebar": {
+    "home": "Accueil",
+    "characters": "Personnages",
+    "wish_counter": "Compteur de voeux",
+    "calculator": "Calculatrice",
+    "timeline": "Chronologie",
+    "settings": "Paramètres",
+    "about": "À propos"
+  }
+}

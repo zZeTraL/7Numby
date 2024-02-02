@@ -1,0 +1,11 @@
+{
+  "sidebar": {
+    "home": "Home",
+    "characters": "Characters",
+    "wish_counter": "Wish Counter",
+    "calculator": "Calculator",
+    "timeline": "Timeline",
+    "settings": "Settings",
+    "about": "About"
+  }
+}
