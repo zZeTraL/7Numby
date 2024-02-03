@@ -13,6 +13,7 @@ import "./App.css";
 // Components
 import Index from "./routes/index.jsx";
 import WIP from "./components/wip/WIP.jsx";
+import Character from "./routes/character/Character.jsx";
 
 // Router
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Index/>,
         children: [
+            {
+                path: "/characters",
+                element: <Character/>
+            },
             {
                 path: "*",
                 element: <WIP title="WIP"/>

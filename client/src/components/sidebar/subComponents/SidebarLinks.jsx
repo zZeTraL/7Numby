@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
+import {useMediaQuery} from "react-responsive";
 import styled from "@emotion/styled";
 
 const sidebarLinks = [
@@ -37,13 +38,14 @@ const sidebarLinks = [
 
 // Styled Components
 const StyledLink = styled(Link)`
-  background-color: ${(props) => props.currentLocation ? "#E94957" : null};
-  opacity: ${(props) => props.currentLocation ? 1 : .7};
+  background-color: ${(props) => props.current === "true" ? "#E94957" : null};
+  opacity: ${(props) => props.current === "true" ? 1 : .7};
   &:hover {
     opacity: 1;
   }
 `;
-const SidebarLinks = ({t}) => {
+const SidebarLinks = ({t, handleState}) => {
+    const isOnMobile = useMediaQuery({query: "(max-width: 1024px)"});
     const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
     return (
@@ -54,8 +56,11 @@ const SidebarLinks = ({t}) => {
                         <StyledLink
                             key={index}
                             to={linkData.link}
-                            currentLocation={currentPath === linkData.link}
-                            onClick={() => setCurrentPath(linkData.link)}
+                            current={(currentPath === linkData.link).toString()}
+                            onClick={() => {
+                                setCurrentPath(linkData.link)
+                                if(isOnMobile) handleState(false);
+                            }}
                             className="flex flex-row opacity-70 items-center rounded-xl px-4 py-3 text-white no-underline duration-300 ease-in"
                         >
                             <div className="flex flex-row items-center">

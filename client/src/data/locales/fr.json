@@ -7,5 +7,20 @@
     "timeline": "Chronologie",
     "settings": "Paramètres",
     "about": "À propos"
+  },
+
+  "footer": {
+    "not_affiliated": "Ce site n'est pas affilié à HoYoverse.",
+    "disclaimer": "Honkai Star Rail est une marque déposée par HoYoverse. Chaque logo, personnage et image figurant sur le site sont la propriété intellectuelle de HoYoverse.",
+    "my_links": "Mes liens",
+    "official_links": "Liens officiels",
+    "credits": "Crédits"
+  },
+
+  "route": {
+    "characters": {
+        "title": "Personnages"
+    }
   }
+
 }
