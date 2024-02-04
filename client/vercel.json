@@ -1,0 +1,14 @@
+{
+  "git": {
+    "deploymentEnabled": {
+      "master": true
+    }
+  },
+  "headers": [
+    { "source": "/service-worker.js", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+  ],
+  "rewrites": [
+    { "source": "/service-worker.js", "destination": "/service-worker.js" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

@@ -1,9 +1,10 @@
+// Constants
 export const elements = [
     "Physical",
     "Fire",
     "Ice",
     "Wind",
-    "Lightning",
+    "Thunder",
     "Imaginary",
     "Quantum"
 ];
@@ -17,8 +18,20 @@ export const paths = [
     {id: "Knight", tag: "Preservation"},
 ]
 
-export const stars = ["StarBig_WhiteGlow", "StarBig"]
+export const stars = [{icon: "StarBig_WhiteGlow", int:4}, {icon:"StarBig", int:5}]
 
+// Functions
 export const getIconPathById = (id) => {
     return paths.find(path => path.id === id).tag
+}
+
+export const reduceCharacterName = (name) => {
+    switch (name) {
+        case "Dan Heng • Imbibitor Lunae":
+            return "Imbibitor"
+        case "Topaz & Numby":
+            return "Topaz"
+        default:
+            return name
+    }
 }

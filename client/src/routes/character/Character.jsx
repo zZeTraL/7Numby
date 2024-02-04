@@ -1,4 +1,5 @@
-import React, {useEffect, useReducer} from "react";
+import React, {useEffect, useReducer, useState} from "react";
+import axios from "axios";
 
 // i18n
 import {useTranslation} from "react-i18next";
@@ -7,19 +8,69 @@ import {useTranslation} from "react-i18next";
 import DisplayHistoryLinks from "../../components/DisplayHistoryLinks.jsx";
 
 // Data
-import {paths, elements, stars} from "../../data/constants.js";
+import {elements, paths, stars, getIconPathById, reduceCharacterName} from "../../data/utils.js";
+import {Link} from "react-router-dom";
+
+// Initial state
+const initialState = {
+    choice:
+        paths.map(path => path.id)
+            .concat(elements.map(element => element))
+            .concat(stars.map(star => star.int)),
+    filteredCharacter: [],
+    filterOption: undefined,
+}
+
+// Reducer
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "UPDATE_CHOICE":
+            // We add/remove element, path, rarity to the choice array without delete previous choice
+            if (state.choice.includes(action.payload)) return {...state, choice: state.choice.filter(e => e !== action.payload)};
+            else return {...state, choice: [...state.choice, action.payload]};
+        case "UPDATE_FILTERED_CHARACTER":
+            // We filter the character list based on the choice array
+            let filteredCharacter = Object.values(action.payload).filter(character =>
+                state.choice.includes(character.element) &&
+                state.choice.includes(character.path) &&
+                state.choice.includes(character.rarity) &&
+                character.name !== "{NICKNAME}"
+            );
+            return {...state, filteredCharacter: filteredCharacter};
+        default:
+            return state;
+    }
+}
 
 const Character = () => {
     const [t, i18n] = useTranslation();
-    // State
+    const [characterData, setCharacterData] = useState();
+    const [state, dispatch] = useReducer(reducer, initialState, undefined);
+
+    useEffect(() => {
+        const fetchCharacters = async () => {
+            const result = await axios.get("./src/data/index_new/" + i18n.language + "/characters.json");
+            return result.data;
+        }
+
+        fetchCharacters().then(r => {
+            updateCharacterData(r)
+        });
+
+    }, [i18n.language]);
+
+    const updateCharacterData = (data) => {
+        setCharacterData(data);
+        dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: data});
+    }
 
     return (
         <div className="flex flex-col gap-4">
             <DisplayHistoryLinks t={t} data={[
-                {
-                    translation: "route.characters.title",
-                }
-            ]}
+                    {
+                        translation: "route.characters.title",
+                    }
+                ]}
             />
             <h1 className="text-4xl font-semibold tracking-wide">{t("route.characters.title")}</h1>
             <div className="flex flex-row gap-2 max-2xl:flex-col max-sm:items-center">
@@ -34,7 +85,12 @@ const Character = () => {
                                 return (
                                     <div
                                         key={index}
-                                        className="p-2 bg-darkBg rounded-xl hover:opacity-60 hover:cursor-pointer"
+                                        className="p-2 bg-darkBg rounded-xl hover:cursor-pointer"
+                                        style={{opacity: state.choice.includes(element) ? "1" : ".25"}}
+                                        onClick={() => {
+                                            dispatch({type: "UPDATE_CHOICE", payload: element});
+                                            dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: characterData});
+                                        }}
                                     >
                                         <img className="w-8" src={"./hsr/icon/element/" + element + ".png"}
                                              alt={element}/>
@@ -47,67 +103,76 @@ const Character = () => {
                         {
                             paths.map((path, index) => {
                                 return (
-                                    <divva
+                                    <div
                                         key={index}
-                                        className="p-2 bg-darkBg rounded-xl hover:opacity-60 hover:cursor-pointer"
+                                        className="p-2 bg-darkBg rounded-xl hover:cursor-pointer"
+                                        style={{opacity: state.choice.includes(path.id) ? "1" : ".25"}}
+                                        onClick={() => {
+                                            dispatch({type: "UPDATE_CHOICE", payload: path.id});
+                                            dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: characterData});
+                                        }}
                                     >
                                         <img className="w-8" src={"./hsr/icon/path/" + path.tag + ".png"}
                                              alt={path.id}/>
-                                    </divva>
+                                    </div>
                                 )
                             })
                         }
                     </div>
                 </div>
-
-
                 <div className="flex items-center flex-row gap-2">
                     {
                         stars.map((star, index) => {
                             return (
                                 <div
                                     key={index}
-                                    className="p-2 bg-darkBg rounded-xl hover:opacity-60 hover:cursor-pointer"
+                                    className="p-2 bg-darkBg rounded-xl hover:cursor-pointer"
+                                    style={{opacity: state.choice.includes(star.int) ? "1" : ".25"}}
+                                    onClick={() => {
+                                        dispatch({type: "UPDATE_CHOICE", payload: star.int});
+                                        dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: characterData});
+                                    }}
                                 >
-                                    <img className="w-8" src={"./hsr/icon/deco/" + star + ".png"} alt={star}/>
+                                    <img className="w-8" src={"./hsr/icon/deco/" + star.icon + ".png"} alt={star.icon}/>
                                 </div>
                             )
                         })
                     }
                 </div>
-
             </div>
 
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-s
+            <div className="flex flex-wrap gap-4 max-w-screen-2xl max-md:justify-center">
+                {
+                    state.filteredCharacter.length === 0 ?
+                        null
+                        :
+                        state.filteredCharacter.map((character, index) => {
+                            return (
+                                <Link
+                                    className="flex flex-col relative w-32 bg-darkBg rounded-xl no-underline hover:bg-gg"
+                                    to={"/characters/" + character.tag}
+                                    key={index}
+                                >
+                                    <img
+                                        className="bg-darkBg p-1 rounded-xl absolute w-8 left-1 top-1 text-white"
+                                        src={"./hsr/icon/element/" + character.element + ".png"}
+                                        alt={character.element}/>
+                                    <img
+                                        className="bg-darkBg p-1 rounded-xl absolute w-8 left-1 bottom-10 text-white"
+                                        src={"./hsr/icon/path/" + getIconPathById(character.path) + ".png"}
+                                        alt={character.element}/>
+                                    <img
+                                        className="w-[inherit] rounded-t-xl" src={"./hsr/" + character.icon}
+                                        alt={character.tag}/>
+                                    <span
+                                        className="text-white text-center text-sm p-2">{reduceCharacterName(character.name)}</span>
+                                </Link>
+                            )
+                        })
+                    }
+            </div>
+
+
         </div>
     );
 }

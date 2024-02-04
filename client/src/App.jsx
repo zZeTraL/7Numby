@@ -33,6 +33,18 @@ const router = createBrowserRouter([
     },
 ]);
 
+// Register the Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register('./service-worker.js')
+        .then((registration) => {
+            console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+        });
+}
+
 createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>
         <RouterProvider router={router}/>
