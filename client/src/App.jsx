@@ -11,7 +11,7 @@ import {I18nextProvider} from "react-i18next";
 import "./App.css";
 
 // Components
-import Index from "./routes/index.jsx";
+import Index from "./routes/Index.jsx";
 import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
 
