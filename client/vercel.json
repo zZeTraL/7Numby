@@ -5,10 +5,15 @@
     }
   },
   "headers": [
-    { "source": "/service-worker.js", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+    {
+      "source": "/service-worker.js",
+      "headers": [
+        { "key": "Content-Type", "value": "application/javascript" }
+      ]
+    }
   ],
   "rewrites": [
-    { "source": "/service-worker.js", "destination": "/service-worker.js" },
+    { "source": "./service-worker.js", "destination": "./service-worker.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

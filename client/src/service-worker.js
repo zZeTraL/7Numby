@@ -4,7 +4,6 @@ const CACHE_NAME = '7Numby-b1.0.0';
 const urlsToCache = [
     '/',
     '/index.html',
-    '/manifest.json',
     // Add more URLs to cache as needed
 ];
 
