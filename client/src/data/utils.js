@@ -1,4 +1,4 @@
-const elements = [
+export const elements = [
     "Physical",
     "Fire",
     "Ice",
@@ -7,7 +7,7 @@ const elements = [
     "Imaginary",
     "Quantum"
 ];
-const paths = [
+export const paths = [
     {id: "Priest", tag: "Abundance"},
     {id: "Warrior", tag: "Destruction"},
     {id: "Mage", tag: "Erudition"},
@@ -17,6 +17,8 @@ const paths = [
     {id: "Knight", tag: "Preservation"},
 ]
 
-const stars = ["StarBig_WhiteGlow", "StarBig"]
+export const stars = ["StarBig_WhiteGlow", "StarBig"]
 
-export {paths, elements, stars};
+export const getIconPathById = (id) => {
+    return paths.find(path => path.id === id).tag
+}
