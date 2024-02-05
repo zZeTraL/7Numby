@@ -21,6 +21,14 @@
     "characters": {
         "title": "Personnages"
     }
+  },
+
+  "sorter": {
+    "sort_by": "Trier par...",
+    "name": "Nom",
+    "element": "Élément",
+    "path": "Voie",
+    "rarity": "Rareté"
   }
 
 }

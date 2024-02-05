@@ -21,6 +21,14 @@
     "characters": {
       "title": "Characters"
     }
+  },
+
+  "sorter": {
+    "sort_by": "Sort by...",
+    "name": "Name",
+    "element": "Element",
+    "path": "Path",
+    "rarity": "Rarity"
   }
 
 }

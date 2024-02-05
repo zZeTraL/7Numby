@@ -29,7 +29,7 @@ export const reduceCharacterName = (name) => {
     switch (name) {
         case "Dan Heng • Imbibitor Lunae":
             return "Imbibitor"
-        case "Topaz & Numby":
+        case "Topaz & Numby": case "Topaz & Compti":
             return "Topaz"
         default:
             return name
