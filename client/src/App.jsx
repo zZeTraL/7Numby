@@ -40,7 +40,7 @@ const router = createBrowserRouter([
 ]);
 
 // Register the Service Worker
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+/*if ('serviceWorker' in navigator && import.meta.env.PROD) {
     navigator.serviceWorker
         .register("/service-worker.js")
         .then((registration) => {
@@ -49,7 +49,7 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
         .catch((error) => {
             console.error('Service Worker registration failed:', error);
         });
-}
+}*/
 
 createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>

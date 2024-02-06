@@ -18,29 +18,20 @@ const CharacterInformation = ({data}) => {
         if (value.tag === path) character = value;
     });
 
-    console.log(character);
-
-    if(character !== undefined) {
-        return (
-            <div>
-                <DisplayHistoryLinks t={t} data={[
-                    {
-                        translation: "route.characters.title",
-                        link: "/characters",
-                    },
-                    {
-                        translation: character.name,
-                    }
-                ]}/>
-                <div>
-                    <img src={"./hsr/" + character.portrait} alt=""/>
-                </div>
-            </div>
-        )
-
-    } else {
-        return (<>Loading...</>)
-    }
+    return (
+        <div>
+            <DisplayHistoryLinks t={t} data={[
+                {
+                    translation: "route.characters.title",
+                    link: "/characters",
+                },
+                {
+                    translation: character.name,
+                }
+            ]}/>
+            <img src={"./hsr/" + character.portrait} alt=""/>
+        </div>
+    )
 
 }
 
