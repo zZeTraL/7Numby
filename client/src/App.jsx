@@ -17,6 +17,9 @@ import Character from "./routes/character/Character.jsx";
 import CharacterInformation from "./routes/character/subRoutes/CharacterInformation.jsx";
 import {CharacterDataProvider} from "./context/DataContext.jsx";
 
+// service worker
+import * as sw from "./service-worker.js";
+
 // Router
 const router = createBrowserRouter([
     {
@@ -42,7 +45,7 @@ const router = createBrowserRouter([
 // Register the Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker
-        .register('./service-worker.js')
+        .register("service-worker.js")
         .then((registration) => {
             console.log('Service Worker registered with scope:', registration.scope);
         })
