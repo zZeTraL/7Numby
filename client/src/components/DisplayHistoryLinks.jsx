@@ -5,7 +5,6 @@ import {Link} from "react-router-dom";
 import {FiChevronRight} from "react-icons/fi";
 
 const DisplayHistoryLinks = ({t,data}) => {
-
     return (
         <div className="flex flex-row items-center gap-2">
             <Link to={"/"} className="opacity-50 no-underline text-white ease-in duration-150 hover:text-gg hover:opacity-100">7Numby.gg</Link>

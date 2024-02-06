@@ -10,7 +10,7 @@ const SetLanguageModal = styled.div`
   display: ${props => props.active ? "flex" : "none"};
 `;
 
-const languageList = [ "en", "fr" ];
+const languageList = ["en", "fr", "kr"];
 
 const Language = ({t}) => {
     const currentLanguage = window.localStorage.getItem("language") || i18n.language;
@@ -33,17 +33,23 @@ const Language = ({t}) => {
                 return "Français";
             case "en":
                 return "English";
+            case "kr":
+                return "한국어";
         }
     }
 
     function setLanguage(language = undefined){
         if(modalState === true && language !== undefined) setModalState(false);
+
         switch (language || currentLanguage) {
             case "fr":
                 i18n.changeLanguage("fr").then(r => console.info("Language changed to French"));
                 break;
             case "en":
                 i18n.changeLanguage("en").then(r => console.info("Language changed to English"));
+                break;
+            case "kr":
+                i18n.changeLanguage("kr").then(r => console.info("Language changed to Korean"));
                 break;
         }
     }
@@ -53,7 +59,7 @@ const Language = ({t}) => {
             <div className="flex flex-row gap-2 p-4 mt-4 items-center hover:cursor-pointer hover:bg-currentLinkBg rounded-xl"
                  onClick={() => setModalState(true)}
             >
-                <img className="h-8" src={"./locales/" + currentLanguage + ".svg"} alt="Flag"/>
+                <img className="h-8 rounded-full" src={"./locales/" + currentLanguage + ".svg"} alt="Flag"/>
                 <span className="text-sm">{displayLanguage()}</span>
             </div>
             <SetLanguageModal
@@ -70,7 +76,7 @@ const Language = ({t}) => {
                                     setLanguage(language);
                                     setModalState(false);
                                 }}>
-                                    <img className="h-8" src={"./locales/" + language + ".svg"} alt="Flag"/>
+                                    <img className="h-8 rounded-full" src={"./locales/" + language + ".svg"} alt="Flag"/>
                                     <span className="text-sm">{displayLanguage(language)}</span>
                                 </div>
                             )

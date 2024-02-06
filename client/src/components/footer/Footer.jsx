@@ -8,7 +8,7 @@ const Footer = ({t}) => {
     const isOnMobile = useMediaQuery({query: "(max-width: 1024px)"});
 
     return (
-        <footer className="flex flex-col justify-end grow lg:ml-64 px-12 py-4 opacity-75">
+        <footer className="flex flex-col justify-end lg:ml-64 px-10 py-4 opacity-75">
             <div className="flex flex-col gap-2">
                 <span>{t("footer.not_affiliated")}</span>
                 <span>{t("footer.disclaimer")}</span>

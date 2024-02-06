@@ -14,6 +14,8 @@ import "./App.css";
 import Index from "./routes/Index.jsx";
 import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
+import CharacterInformation from "./routes/character/subRoutes/CharacterInformation.jsx";
+import {CharacterDataProvider} from "./context/DataContext.jsx";
 
 // Router
 const router = createBrowserRouter([
@@ -24,6 +26,10 @@ const router = createBrowserRouter([
             {
                 path: "/characters",
                 element: <Character/>
+            },
+            {
+                path: "characters/:character",
+                element: <CharacterInformation />,
             },
             {
                 path: "*",
@@ -47,6 +53,8 @@ if ('serviceWorker' in navigator) {
 
 createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>
-        <RouterProvider router={router}/>
+        <CharacterDataProvider>
+            <RouterProvider router={router}/>
+        </CharacterDataProvider>
     </I18nextProvider>
 );

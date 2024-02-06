@@ -8,7 +8,10 @@ i18n
     .use(initReactI18next)
     .use(Backend)
     .init({
-        supportedLngs: ["en", "fr"],
+        cache: {
+            enabled: true
+        },
+        supportedLngs: ["en", "fr", "kr"],
         fallbackLng: "en",
         react: {useSuspense: true},
         debug: false,
