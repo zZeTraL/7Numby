@@ -2,6 +2,9 @@ import React from "react";
 import {createRoot} from "react-dom/client";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
+// Provider
+import {CharacterDataProvider} from "./context/DataContext.jsx";
+
 // i18n language support
 import './i18n.js';
 import i18next from "i18next";
@@ -15,7 +18,7 @@ import Index from "./routes/Index.jsx";
 import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
 import CharacterInformation from "./routes/character/subRoutes/CharacterInformation.jsx";
-import {CharacterDataProvider} from "./context/DataContext.jsx";
+import Timeline from "./routes/timeline/Timeline.jsx";
 
 // Router
 const router = createBrowserRouter([
@@ -30,6 +33,10 @@ const router = createBrowserRouter([
             {
                 path: "characters/:character",
                 element: <CharacterInformation />,
+            },
+            {
+                path: "timeline",
+                element: <Timeline />,
             },
             {
                 path: "*",

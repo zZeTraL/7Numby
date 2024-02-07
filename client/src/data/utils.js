@@ -1,4 +1,3 @@
-// Constants
 export const elements = [
     "Physical",
     "Fire",
@@ -28,9 +27,7 @@ export const getIconPathById = (id) => {
 export const reduceCharacterName = (name) => {
     switch (name) {
         case "Dan Heng • Imbibitor Lunae":
-            return "Imbibitor"
-        case "Topaz & Numby": case "Topaz & Compti":
-            return "Topaz"
+            return "Imbibitor Lunae"
         default:
             return name
     }

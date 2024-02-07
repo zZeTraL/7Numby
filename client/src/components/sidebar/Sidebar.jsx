@@ -1,14 +1,15 @@
 import {Link} from "react-router-dom";
 import {useMediaQuery} from "react-responsive";
 
+// Constant
+import {currentSidebarIcon} from "../../data/constants.js";
+
 // Components
 import SidebarLinks from "./subComponents/SidebarLinks.jsx";
 import Language from "./subComponents/Language.jsx";
 import {FiMenu, FiX} from "react-icons/fi";
 import {useState} from "react";
 
-// Constants
-const currentBgLogo = 1305;
 
 const Sidebar = ({t}) => {
     const isOnMobile = useMediaQuery({query: "(max-width: 1024px)"});
@@ -27,7 +28,7 @@ const Sidebar = ({t}) => {
                             </h1>
                         </div>
                         <div className="w-64 h-64 absolute -z-10">
-                            <img className="absolute w-64 h-64" src={"./hsr/icon/character/" + currentBgLogo + ".png"} alt="BgLogo"></img>
+                            <img className="absolute w-64 h-64" src={"./hsr/icon/character/" + currentSidebarIcon + ".png"} alt="BgLogo"></img>
                             <div className="h-64 w-64 absolute bg-gradient-to-b from-transparent from-50% to-sidebarBg to-100%"></div>
                         </div>
                     </Link>

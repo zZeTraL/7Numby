@@ -19,7 +19,7 @@ const CharacterInformation = ({data}) => {
     });
 
     return (
-        <div>
+        <div className="relative">
             <DisplayHistoryLinks t={t} data={[
                 {
                     translation: "route.characters.title",
@@ -29,7 +29,11 @@ const CharacterInformation = ({data}) => {
                     translation: character.name,
                 }
             ]}/>
-            <img src={"./hsr/" + character.portrait} alt=""/>
+            <div className="flex items-center mt-4 gap-2 grow">
+                <h1 className="text-3xl tracking-wider font-semibold">{character.name}</h1>
+                <img className="w-12" src={"./hsr/icon/element/" + character.element + ".png"} alt={character.element}/>
+            </div>
+            <img className="w-full" src={"./hsr/" + character.portrait} alt={character.name}/>
         </div>
     )
 

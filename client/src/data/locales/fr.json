@@ -20,6 +20,9 @@
   "route": {
     "characters": {
         "title": "Personnages"
+    },
+    "timeline": {
+      "title": "Chronologie"
     }
   },
 

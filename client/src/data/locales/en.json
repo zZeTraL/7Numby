@@ -20,6 +20,9 @@
   "route": {
     "characters": {
       "title": "Characters"
+    },
+    "timeline": {
+      "title": "Timeline"
     }
   },
 
