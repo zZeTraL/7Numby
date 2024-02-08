@@ -2,42 +2,57 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
 
-const CharacterDataContext = createContext();
+// Constants
+const baseURL = import.meta.env.PROD ? "./data/index_new/" : "./src/data/index_new/";
+const urls = [
+    "characters.json",
+    "character_skills.json",
+    "character_ranks.json",
+]
 
-export const CharacterDataProvider = ({ children }) => {
-    const [characterData, setCharacterData] = useState({});
+const DataContext = createContext();
+export const DataContextProvider = ({ children }) => {
+    const [data, setData] = useState({
+        characters: [],
+        characterSkills: [],
+        characterRanks: [],
+    });
     const [t, i18n] = useTranslation();
 
     useEffect(() => {
-        const fetchCharacters = async () => {
-            const result = await axios.get(
-                `./src/data/index_new/${i18n.language}/characters.json`
-            );
-            return result.data;
+        const fetchData = async () => {
+            const result = await axios.all(urls.map(url => axios.get(baseURL + i18n.language + "/" + url)));
+            result.forEach((r, i) => {
+                result[i] = r.data;
+            });
+            return result;
         };
 
-        fetchCharacters().then((r) => {
+        fetchData().then((r) => {
             updateCharacterData(r);
         });
     }, [i18n.language]);
 
     const updateCharacterData = (data) => {
-        setCharacterData(data);
+        setData({
+            characters: data[0],
+            characterSkills: data[1],
+            characterRanks: data[2],
+        });
     };
 
     return (
-        <CharacterDataContext.Provider value={characterData}>
+        <DataContext.Provider value={data}>
             {children}
-        </CharacterDataContext.Provider>
+        </DataContext.Provider>
     );
 };
 
-export const useCharacterData = (callback) => {
-    const context = useContext(CharacterDataContext);
-    if(callback) callback(false);
+export const useData = () => {
+    const context = useContext(DataContext);
     if (!context) {
         throw new Error(
-            "useCharacterData must be used within a CharacterDataProvider"
+            "Error: useData must be used within a DataContextProvider"
         );
     }
     return context;

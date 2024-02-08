@@ -12,7 +12,6 @@ const SelectBy = ({data, callback}) => {
 
     const options = data.options;
 
-
     return (
         <div
             className="flex flex-col justify-center relative px-4 w-full h-[inherit] rounded-xl"

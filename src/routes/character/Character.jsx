@@ -1,5 +1,8 @@
-import React, {useEffect, useReducer, useState} from "react";
-import axios from "axios";
+import React, {useEffect, useReducer} from "react";
+import {Link} from "react-router-dom";
+
+// Context
+import {useData} from "../../context/DataContext.jsx";
 
 // i18n
 import {useTranslation} from "react-i18next";
@@ -10,7 +13,6 @@ import SelectBy from "../../components/SelectBy.jsx";
 
 // Data
 import {elements, paths, stars, getIconPathById, reduceCharacterName} from "../../data/utils.js";
-import {Link} from "react-router-dom";
 
 // Initial state
 const initialState = {
@@ -58,7 +60,6 @@ const reducer = (state, action) => {
             }
 
             return {...state, filteredCharacter: filteredCharacter};
-
         default:
             return state;
     }
@@ -66,25 +67,17 @@ const reducer = (state, action) => {
 
 const Character = () => {
     const [t, i18n] = useTranslation();
-    const [characterData, setCharacterData] = useState();
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
+    const characterData = useData().characters;
 
     useEffect(() => {
-        const fetchCharacters = async () => {
-            const result = await axios.get("./src/data/index_new/" + i18n.language + "/characters.json");
-            return result.data;
-        }
+        handleChoiceUpdate()
+    }, [characterData, state.filterOption]);
 
-        fetchCharacters().then(r => {
-            updateCharacterData(r)
-        });
-
-    }, [i18n.language, state.filterOption]);
-
-    const updateCharacterData = (data) => {
-        setCharacterData(data);
-        dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: data});
-    }
+    const handleChoiceUpdate = (payload) => {
+        if(payload) dispatch({ type: "UPDATE_CHOICE", payload });
+        dispatch({ type: "UPDATE_FILTERED_CHARACTER", payload: characterData });
+    };
 
     return (
         <div className="flex flex-col gap-4">
@@ -115,10 +108,7 @@ const Character = () => {
                                         key={index}
                                         className="p-2 bg-darkBg rounded-xl hover:cursor-pointer"
                                         style={{opacity: state.choice.includes(element) ? "1" : ".3"}}
-                                        onClick={() => {
-                                            dispatch({type: "UPDATE_CHOICE", payload: element});
-                                            dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: characterData});
-                                        }}
+                                        onClick={() => {handleChoiceUpdate(element)}}
                                     >
                                         <img className="w-8" src={"./hsr/icon/element/" + element + ".png"}
                                              alt={element}/>
@@ -135,10 +125,7 @@ const Character = () => {
                                         key={index}
                                         className="p-2 bg-darkBg rounded-xl hover:cursor-pointer"
                                         style={{opacity: state.choice.includes(path.id) ? "1" : ".3"}}
-                                        onClick={() => {
-                                            dispatch({type: "UPDATE_CHOICE", payload: path.id});
-                                            dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: characterData});
-                                        }}
+                                        onClick={() => {handleChoiceUpdate(path.id)}}
                                     >
                                         <img className="w-8" src={"./hsr/icon/path/" + path.tag + ".png"}
                                              alt={path.id}/>
@@ -156,10 +143,7 @@ const Character = () => {
                                     key={index}
                                     className="p-2 bg-darkBg rounded-xl hover:cursor-pointer"
                                     style={{opacity: state.choice.includes(star.int) ? "1" : ".3"}}
-                                    onClick={() => {
-                                        dispatch({type: "UPDATE_CHOICE", payload: star.int});
-                                        dispatch({type: "UPDATE_FILTERED_CHARACTER", payload: characterData});
-                                    }}
+                                    onClick={() => {handleChoiceUpdate(star.int)}}
                                 >
                                     <img className="w-8" src={"./hsr/icon/deco/" + star.icon + ".png"} alt={star.icon}/>
                                 </div>

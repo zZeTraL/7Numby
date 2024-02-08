@@ -1,9 +1,9 @@
-import React from "react";
+import React, {Suspense} from "react";
 import {createRoot} from "react-dom/client";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 
 // Provider
-import {CharacterDataProvider} from "./context/DataContext.jsx";
+import {DataContextProvider} from "./context/DataContext.jsx";
 
 // i18n language support
 import './i18n.js';
@@ -60,8 +60,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>
-        <CharacterDataProvider>
+        <DataContextProvider>
             <RouterProvider router={router}/>
-        </CharacterDataProvider>
+        </DataContextProvider>
     </I18nextProvider>
 );

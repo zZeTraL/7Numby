@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useCharacterData} from "../../../context/DataContext.jsx";
+import {useData} from "../../../context/DataContext.jsx";
 
 // Components
 import DisplayHistoryLinks from "../../../components/DisplayHistoryLinks.jsx";
@@ -7,13 +7,13 @@ import DisplayHistoryLinks from "../../../components/DisplayHistoryLinks.jsx";
 // i18n
 import {useTranslation} from "react-i18next";
 
-const CharacterInformation = ({data}) => {
+const CharacterInformation = () => {
     const {t, i18n} = useTranslation();
     const path = window.location.pathname.split("/")[2];
-    const characterData = useCharacterData();
+    const data = useData();
 
     let character = {};
-    Object.entries(characterData).filter(([key, value]) => {
+    Object.entries(data.characters).filter(([key, value]) => {
         // if value.tag === path return the value
         if (value.tag === path) character = value;
     });

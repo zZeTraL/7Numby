@@ -3,6 +3,10 @@ import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
+import fr from "./data/locales/fr.json";
+import en from "./data/locales/en.json";
+
+
 i18n
     .use(LanguageDetector)
     .use(initReactI18next)
@@ -15,9 +19,14 @@ i18n
         fallbackLng: "en",
         react: {useSuspense: true},
         debug: false,
-        backend: {
-            loadPath: "./src/data/locales/{{lng}}.json",
-        }
+        resources: {
+            en: {
+                translation: en
+            },
+            fr: {
+                translation: fr
+            }
+        },
     }).then(() => {
     console.info("i18n initialized");
 })
