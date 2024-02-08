@@ -13,6 +13,7 @@ export default defineConfig({
     {
       targets: [
         {src: "src/data", dest: "dist"},
+        {src: "src/service-worker.js", dest: "dist"},
       ],
       hook: 'writeBundle'
     }
