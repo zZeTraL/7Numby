@@ -6,6 +6,7 @@ import {eventsDate} from "../../data/timeline.js";
 
 // Components
 import DisplayHistoryLinks from "../../components/DisplayHistoryLinks.jsx";
+import {Helmet} from "react-helmet";
 
 
 const Timeline = () => {
@@ -13,6 +14,9 @@ const Timeline = () => {
 
     return (
         <div className="flex flex-col gap-4">
+            <Helmet>
+                <title>7Numby.com - {t("route.timeline.title")}</title>
+            </Helmet>
             <DisplayHistoryLinks t={t} data={[
                 {
                     translation: "route.timeline.title",

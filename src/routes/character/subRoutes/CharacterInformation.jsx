@@ -6,6 +6,7 @@ import DisplayHistoryLinks from "../../../components/DisplayHistoryLinks.jsx";
 
 // i18n
 import {useTranslation} from "react-i18next";
+import {Helmet} from "react-helmet";
 
 const CharacterInformation = () => {
     const {t, i18n} = useTranslation();
@@ -20,6 +21,9 @@ const CharacterInformation = () => {
 
     return (
         <div className="relative">
+            <Helmet>
+                <title>7Numby.com - {t("route.characters.title")}</title>
+            </Helmet>
             <DisplayHistoryLinks t={t} data={[
                 {
                     translation: "route.characters.title",

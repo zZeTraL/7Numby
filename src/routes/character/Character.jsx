@@ -13,6 +13,7 @@ import SelectBy from "../../components/SelectBy.jsx";
 
 // Data
 import {elements, paths, stars, getIconPathById, reduceCharacterName} from "../../data/utils.js";
+import {Helmet} from "react-helmet";
 
 // Initial state
 const initialState = {
@@ -81,6 +82,9 @@ const Character = () => {
 
     return (
         <div className="flex flex-col gap-4">
+            <Helmet>
+                <title>7Numby.com - {t("route.characters.title")}</title>
+            </Helmet>
             <DisplayHistoryLinks t={t} data={[
                     {
                         translation: "route.characters.title",
