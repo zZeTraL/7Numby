@@ -1,40 +1,10 @@
-import React, {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import React, {useState} from "react";
 import {useMediaQuery} from "react-responsive";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
-const sidebarLinks = [
-    {
-        key: "sidebar.home",
-        icon: "QuestMainIcon",
-        link: "/"
-    },
-    {
-        key: "sidebar.characters",
-        icon: "AvatarIcon",
-        link: "/characters"
-    },
-    {
-        key: "sidebar.wish_counter",
-        icon: "DrawcardIcon",
-        link: "/wish"
-    },
-    {
-        key: "sidebar.calculator",
-        icon: "InventoryConsumablesIcon",
-        link: "/calculator"
-    },
-    {
-        key: "sidebar.timeline",
-        icon: "QuestIcon",
-        link: "/timeline"
-    },
-    {
-        key: "sidebar.settings",
-        icon: "SettingsIcon",
-        link: "/settings"
-    }
-]
+// Constants
+import {sidebarLinks} from "../../../data/constants.js";
 
 // Styled Components
 const StyledLink = styled(Link)`
@@ -44,9 +14,10 @@ const StyledLink = styled(Link)`
     opacity: 1;
   }
 `;
+
 const SidebarLinks = ({t, handleState}) => {
     const isOnMobile = useMediaQuery({query: "(max-width: 1024px)"});
-    const [currentPath, setCurrentPath] = useState(window.location.pathname);
+    const [currentPath, setCurrentPath] = useState("/" + window.location.pathname.split("/")[1]);
 
     return (
         <div className="flex flex-col grow-8 gap-4 overflow-y-auto z-10">

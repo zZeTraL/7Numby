@@ -1,4 +1,5 @@
 import React, {useEffect, useReducer} from "react";
+import {Helmet} from "react-helmet";
 import {Link} from "react-router-dom";
 
 // Context
@@ -13,7 +14,6 @@ import SelectBy from "../../components/SelectBy.jsx";
 
 // Data
 import {elements, paths, stars, getIconPathById, reduceCharacterName} from "../../data/utils.js";
-import {Helmet} from "react-helmet";
 
 // Initial state
 const initialState = {

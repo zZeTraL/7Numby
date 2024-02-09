@@ -31,8 +31,13 @@ export default {
         2: "2",
         4: "4",
         8: "8",
+        10: "10",
         12: "12",
         16: "16",
+      },
+      fontFamily: {
+        firstWorld: ["FirstWorld", "sans-serif"],
+        hsr: ["SDK_SC_Web", "sans-serif"],
       },
     },
   },
