@@ -13,7 +13,8 @@ import DisplayHistoryLinks from "../../components/DisplayHistoryLinks.jsx";
 import SelectBy from "../../components/SelectBy.jsx";
 
 // Data
-import {elements, paths, stars, getIconPathById, reduceCharacterName} from "../../data/utils.js";
+import {elements, paths, rarity, stars} from "../../data/constants.js";
+import {getIconPathById, reduceCharacterName} from "../../data/utils.js";
 
 // Initial state
 const initialState = {
@@ -59,7 +60,6 @@ const reducer = (state, action) => {
                 default:
                     break;
             }
-
             return {...state, filteredCharacter: filteredCharacter};
         default:
             return state;
@@ -170,16 +170,18 @@ const Character = () => {
                                 <img
                                     className="bg-darkBg p-1 rounded-xl absolute w-8 left-1 top-1 text-white"
                                     src={"./hsr/icon/element/" + character.element + ".png"}
-                                    alt={character.element}/>
+                                    alt={character.element}
+                                />
                                 <img
                                     className="bg-darkBg p-1 rounded-xl absolute w-8 left-1 bottom-10 text-white"
                                     src={"./hsr/icon/path/" + getIconPathById(character.path) + ".png"}
-                                    alt={character.element}/>
+                                    alt={character.element}
+                                />
                                 <img
-                                    className="w-[inherit] rounded-t-xl" src={"./hsr/" + character.icon}
-                                    alt={character.tag}/>
-                                <span
-                                    className="text-white text-center text-sm p-2 bg-darkBg">{reduceCharacterName(character.name)}</span>
+                                    className="w-32 h-32 rounded-t-xl" src={"./hsr/" + character.icon}
+                                    alt={character.tag}
+                                />
+                                <span className="text-white text-center text-sm p-2 bg-darkBg">{reduceCharacterName(character.name)}</span>
                             </Link>
                         )
                     })
