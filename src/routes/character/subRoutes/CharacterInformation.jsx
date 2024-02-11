@@ -18,6 +18,7 @@ import {
     getAeonByPath,
     getRarityArrayByInt, getCharacterByName, processSkillsText
 } from "../../../data/utils.js";
+import Skill from "../../../components/Skill.jsx";
 
 const CharacterInformation = () => {
     const {t, i18n} = useTranslation();
@@ -25,9 +26,11 @@ const CharacterInformation = () => {
 
     const path = window.location.pathname.split("/")[2];
     const character = getCharacterByName(path, data.characters) || {};
-    const skills = getCharacterSkills(character.skills || [], data.characterSkills);
+    let skills = getCharacterSkills(character.skills || [], data.characterSkills);
 
-    console.log(skills);
+    if(character.id === "1213") {
+        skills = [skills[0], skills[1], skills[2], skills[3], skills[5]]
+    }
 
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
@@ -98,29 +101,12 @@ const CharacterInformation = () => {
                             }}
                         />
                     </div>
-                    <div className="grid grid-cols-3 my-12 px-12 gap-4">
+                    <div className="grid grid-cols-3 my-12 px-32 gap-4">
                         {
-                            skills.length > 0 &&
                             skills.map((skill, index) => {
-                                if(skill.effect === "MazeAttack") return;
+                                if(skill.effect === "MazeAttack") return null;
                                 return (
-                                    <div key={index} className="flex flex-col gap-3 bg-darkBg rounded-xl py-8 px-5">
-                                        <div className="flex justify-center">
-                                            <img className="w-16" src={"./hsr/" + skill.icon} alt=""/>
-                                        </div>
-                                        <div>
-                                            <h2 className="text-lg text-center font-semibold">{skill.name}</h2>
-                                        </div>
-                                        <div className="flex flex-col">
-                                            {
-                                                skill.desc.split("\n").map((text, index) => {
-                                                    return (
-                                                        <span key={index} className="font-hsr leading-5 tracking-wide text-sm"><br/>{text}</span>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
+                                    <Skill key={index} skill={skill} data={data}/>
                                 )
                             })
                         }
