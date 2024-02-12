@@ -19,6 +19,7 @@ import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
 import CharacterInformation from "./routes/character/subRoutes/CharacterInformation.jsx";
 import Timeline from "./routes/timeline/Timeline.jsx";
+import {Analytics} from "@vercel/analytics/react";
 
 // Router
 const router = createBrowserRouter([
@@ -61,6 +62,7 @@ createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>
         <DataContextProvider>
             <RouterProvider router={router}/>
+            <Analytics />
         </DataContextProvider>
     </I18nextProvider>
 );
