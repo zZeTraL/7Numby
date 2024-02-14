@@ -37,6 +37,12 @@ export const sidebarLinks = [
     }
 ]
 
+export const characterInformationHash = {
+    "#skills": "skills",
+    "#eidolons": "eidolons",
+    "#builds": "builds"
+}
+
 // ==============================
 // Related game constants
 // ==============================

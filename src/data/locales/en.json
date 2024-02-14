@@ -19,7 +19,10 @@
 
   "route": {
     "characters": {
-      "title": "Characters"
+      "title": "Characters",
+      "skills": "Skills",
+      "eidolons": "Eidolons",
+      "builds": "Builds"
     },
     "timeline": {
       "title": "Timeline"

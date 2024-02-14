@@ -19,7 +19,10 @@
 
   "route": {
     "characters": {
-        "title": "Personnages"
+      "title": "Personnages",
+      "skills": "Compétences",
+      "eidolons": "Eidolons",
+      "builds": "Builds"
     },
     "timeline": {
       "title": "Chronologie"

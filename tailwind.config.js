@@ -39,6 +39,9 @@ export default {
         firstWorld: ["FirstWorld", "sans-serif"],
         hsr: ["SDK_SC_Web", "sans-serif"],
       },
+      backgroundImage: {
+        skills: "url('./hsr/image/simulated_event/bg_skills.png')",
+      }
     },
   },
   plugins: [],

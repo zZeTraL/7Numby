@@ -1,10 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
+import styled from "@emotion/styled";
 
 // Context
 import {useData} from "../../../context/DataContext.jsx";
 
+// Constants
+import {characterInformationHash} from "../../../data/constants.js";
+
 // Components
 import DisplayHistoryLinks from "../../../components/DisplayHistoryLinks.jsx";
+import Skill from "../../../components/Skill.jsx";
 
 // i18n
 import {useTranslation} from "react-i18next";
@@ -16,24 +21,60 @@ import {
     getCharacterSkills,
     getIconPathById,
     getAeonByPath,
-    getRarityArrayByInt, getCharacterByName, processSkillsText
+    getRarityArrayByInt, getCharacterByName
 } from "../../../data/utils.js";
-import Skill from "../../../components/Skill.jsx";
+import WIP from "../../../components/wip/WIP.jsx";
+
+// Styled components
+const StyledBtn = styled.div`
+    position: relative;
+    transition: all ease-in 500ms;
+    overflow: hidden;
+    scale: ${props => props.current ? "1.1" : null};
+    &:hover {
+        cursor: pointer;
+        span {
+            scale: ${props => props.current ? null : "1.04"};
+            opacity: 1;
+        }
+        img {
+            filter: blur(0px);
+            opacity: .5;
+        }
+    }
+    
+    span {
+        transition: all ease-in 500ms;
+        z-index: 10;
+        opacity: ${props => props.current ? "1" : "0.5"};
+    }
+    img {
+        transition: all ease-in 500ms;
+        filter: ${props => props.current ? "blur(0px)" : "blur(2px)"};
+        opacity: ${props => props.current ? ".6" : "0.25"};
+    
+    }
+`;
 
 const CharacterInformation = () => {
     const {t, i18n} = useTranslation();
+    const [currentModal, setCurrentModal] = useState(characterInformationHash[window.location.hash] || "skills");
     const data = useData();
 
     const path = window.location.pathname.split("/")[2];
     const character = getCharacterByName(path, data.characters) || {};
     let skills = getCharacterSkills(character.skills || [], data.characterSkills);
 
-    if(character.id === "1213") {
-        skills = [skills[0], skills[1], skills[2], skills[3], skills[5]]
-    }
-
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
+
+    console.log(character)
+
+    const handleModalState = (modal) => {
+        if(modal === currentModal) return;
+        setCurrentModal(modal);
+        window.location.hash = modal;
+    }
 
     if(data.characters.length === 0) {
         return (
@@ -87,30 +128,77 @@ const CharacterInformation = () => {
                                 })
                             }
                         </div>
+                        <div>
+                            {character.desc}
+                        </div>
                     </div>
                     <div className="flex justify-center">
                         <img
-                            className="w-[1024px] ease-in-out duration-500 hover:cursor-pointer"
+                            className="w-[768px] ease-in-out duration-500 hover:cursor-pointer"
                             src={"./hsr/" + character.portrait} alt={character.name}
                             onClick={(event) => {
-                                if(event.target.style.width === "2048px") {
-                                    event.target.style.width = "1024px";
+                                if(event.target.style.width === "1024px") {
+                                    event.target.style.width = "768px";
                                 } else {
-                                    event.target.style.width = "2048px";
+                                    event.target.style.width = "1024px";
                                 }
                             }}
                         />
                     </div>
-                    <div className="grid grid-cols-3 my-12 px-32 gap-4">
-                        {
-                            skills.map((skill, index) => {
-                                if(skill.effect === "MazeAttack") return null;
-                                return (
-                                    <Skill key={index} skill={skill} data={data}/>
-                                )
-                            })
-                        }
+                    <div className="flex flex-row gap-8 max-2xl:flex-col max-2xl:items-center md:px-32 mt-12 w-full relative">
+                        <div className="absolute -translate-x-12 top-[50%] w-64 left-0 border-b-2 border-dotted"></div>
+                        <StyledBtn
+                            current={currentModal === "skills"}
+                            className="flex flex-row items-center px-8 w-64 h-16 rounded-xl bg-darkBg"
+                            onClick={() => {handleModalState("skills")}}
+                        >
+                            <span className="text-lg tracking-wider z-10">{t("route.characters.skills")}</span>
+                            <img className="absolute blur-[2px] -right-2 w-28 opacity-25" src={"./hsr/icon/item/252.png"} alt="Skills"/>
+                        </StyledBtn>
+                        <StyledBtn
+                            current={currentModal === "eidolons"}
+                            className="flex flex-row items-center px-8 w-64 h-16 rounded-xl bg-darkBg"
+                            onClick={() => {handleModalState("eidolons")}}
+                        >
+                            <span className="text-lg tracking-wider">{t("route.characters.eidolons")}</span>
+                            <img className="absolute blur-[2px] -right-2 w-28" src={"./hsr/icon/item/261.png"} alt="Eidolons"/>
+                        </StyledBtn>
+                        <StyledBtn
+                            current={currentModal === "builds"}
+                            className="flex flex-row items-center px-8 w-64 h-16 rounded-xl bg-darkBg"
+                            onClick={() => {handleModalState("builds")}}
+                        >
+                            <span className="text-lg tracking-wider">{t("route.characters.builds")}</span>
+                            <img className="absolute blur-[2px] -right-2 w-26" src={"./hsr/icon/item/71001.png"} alt="Builds"/>
+                        </StyledBtn>
                     </div>
+                    {
+                        currentModal === "skills" &&
+                        (
+                            <div className="grid 2xl:grid-cols-3 xl:grid-cols-2 md:grid-cols-1 my-12 md:px-16 gap-4">
+                                {
+                                    skills.map((skill, index) => {
+                                        if (skill.type === "MazeNormal") return;
+                                        return (
+                                            <Skill key={index} skill={skill} params={character}/>
+                                        )
+                                    })
+                                }
+                            </div>
+                        )
+                    }
+                    {
+                        currentModal === "eidolons" &&
+                        (
+                            <WIP title="WIP" />
+                        )
+                    }
+                    {
+                        currentModal === "builds" &&
+                        (
+                            <WIP title="WIP" />
+                        )
+                    }
                 </div>
             </div>
         </>

@@ -2,6 +2,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+* {
+    scrollbar-color: #4a4e69 #2b2d48;
+    scrollbar-width: thin;
+}
+
+
 body {
     background-color: #2b2d48;
     color: #F2FBEF;

@@ -1,41 +1,62 @@
 import React, {Fragment, useEffect, useState} from "react";
+import {getDefaultLevel, getParamsByLevel} from "../data/utils.js";
 
 const Skill = ({skill}) => {
-    const desc = skill.desc || "";
-    const params = skill.params || [];
+    const [parts, setParts] = useState([]);
+    const [level, setLevel] = useState(getDefaultLevel(skill));
 
-    const [text, setText] = useState([]);
-
-    /* Todo: Need to refactor some errors on certain characters */
     useEffect(() => {
-        console.log("skill", skill);
-        console.log("desc", desc);
-        console.log("params", params);
+        const desc = skill.desc.replaceAll("\n", " LineBreak ").split(" ");
+        const param = getParamsByLevel(skill, level);
 
-        let parts = desc.split(" ");
         let str = "";
-        let result = [];
-        for (const part of parts) {
-            // # = number
-            if(!part.includes("#")){
-                str += part + " ";
-                if(parts.indexOf(part) === parts.length - 1) result.push(str);
-            } else {
-                result.push(str);
+        const updatedParts = desc.reduce((accumulator, text, index) => {
+            if (text.includes("LineBreak")) {
+                // If it's a line break, push the string and the line break
+                accumulator.push(str.trim(), <br/>, <br/>);
                 str = "";
-
-                // from #1[i] 1 is a number ranged from 0 to 10 get me the number after the #
-                let num = part.match(/#(\d+)/)[1] - 1;
-                let param = params[skill.max_level - 1][num];
-
-                if(param % 1 !== 0 || param === 1) param = Math.round(param * 100) + "%";
-                result.push(<span className="text-7">{param} </span>);
+            } else if (!text.includes("#")) {
+                str += text + " ";
+                // If it's the last element, push the string
+                if (index === desc.length - 1) accumulator.push(str.trim());
+            } else {
+                // This is a number either #1[i]% or #1[i]
+                // get the number after the #
+                const num = text.match(/#(\d+)/)[1];
+                let value = param[num - 1]
+                if(text.includes("%")) {
+                    value *= 100;
+                    // Use a ternary operator to format the value as a percentage
+                    value = `${value % 1 === 0 ? value.toFixed(0) : value.toFixed(1)}%`;
+                }
+                accumulator.push(str.trim(), <span className="text-7"> {value} </span>);
+                str = "";
             }
+            return accumulator;
+        }, []);
+        setParts(updatedParts);
+    }, [skill.desc, level]);
+
+    // TODO: REFACTOR THIS
+    const handleState = () => {
+        console.log(skill.max_level)
+        switch (skill.type) {
+            case "Normal":
+                setLevel(level === 8 ? 0 : level + 1)
+                break;
+            case "BPSkill":
+                setLevel(level === 14 ? 0 : level + 1)
+                break;
+            case "Ultra":
+                setLevel(level === 14 ? 0 : level + 1)
+                break;
+            case "Talent":
+                setLevel(level === 14 ? 0 : level + 1)
+                break;
+            default:
+                break;
         }
-
-        setText(result);
-
-    }, [skill]);
+    }
 
     return (
         <>
@@ -43,21 +64,33 @@ const Skill = ({skill}) => {
                 <div className="flex justify-center">
                     <img className="w-16" src={"./hsr/" + skill.icon} alt=""/>
                 </div>
-                <div className="flex flex-col items-center my-2">
-                    <h2 className="text-lg font-semibold tracking-wide">{skill.name}</h2>
+                <div className="flex flex-col items-center my-2 gap-1">
+                    <h2 className="text-md font-semibold tracking-wide leading-5">{skill.name}</h2>
                     <span className="text-sm opacity-65">{skill.type_text}</span>
                 </div>
-                <span className="">
-                    {
-                        text.map((part, index) => {
-                            return (
-                                <Fragment key={index}>
-                                    {part}
-                                </Fragment>
-                            )
-                        })
-                    }
-                </span>
+                <div className="grow flex flex-col">
+                    <span className="grow text-md tracking-tighter">
+                        {
+                            parts.map((part, index) => {
+                                return (
+                                    <Fragment key={index}>
+                                        {part === " LineBreak " ? <br/> : part}
+                                    </Fragment>
+                                )
+                            })
+                        }
+                    </span>
+                    <div className="mt-8 flex flex-row justify-center">
+                        <span
+                            className="text-xs ease-in duration-300 hover:cursor-pointer hover:text-gg"
+                            onClick={() => {handleState()}}
+                        >
+                            Lv. {level + 1}
+                        </span>
+                    </div>
+                </div>
+
+
             </div>
         </>
     )

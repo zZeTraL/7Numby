@@ -44,7 +44,7 @@ export const getCharacterSkills = (array, data) => {
             }
         }
     })
-    console.info(result);
+    //console.info(result);
     return result;
 }
 
@@ -61,8 +61,41 @@ export const getCharacterByName = (name, data) => {
             result = value;
         }
     })
-    if(Object.keys(result).length !== 0) console.info(result);
+    //if(Object.keys(result).length !== 0) console.info(result);
     return result;
+}
+
+export const getDefaultLevel = (skill) => {
+    let type = skill.type;
+    switch (type) {
+        case "Normal":
+            return 5
+        case "BPSkill":
+            return 9
+        case "Ultra":
+            return 9
+        case "Talent":
+            return 9
+        case "MazeNormal":
+            return;
+        case "Maze":
+            return 0
+        default:
+            return;
+    }
+}
+
+export const getParamsByLevel = (skill, currentLevel=5) => {
+    /* All available skill type :
+     * Normal
+     * BPSkill
+     * Ultra
+     * Talent
+     * MazeNormal
+     * Maze
+     */
+    const { type, params } = skill;
+    return ["Normal", "BPSkill", "Ultra", "Talent", "Maze"].includes(type) ? params[currentLevel] : 1;
 }
 
 
@@ -74,16 +107,4 @@ export const reduceCharacterName = (name) => {
         default:
             return name
     }
-}
-
-export const processSkillsText = (text) => {
-    let parts = [];
-    let splitText = text.split(" ");
-    for (const part of splitText) {
-        parts.push({
-            text: part,
-            type: part.includes("#") ? "number" : "text"
-        })
-    }
-    return parts;
 }
