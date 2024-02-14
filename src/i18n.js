@@ -6,7 +6,6 @@ import Backend from "i18next-http-backend";
 import fr from "./data/locales/fr.json";
 import en from "./data/locales/en.json";
 
-
 i18n
     .use(LanguageDetector)
     .use(initReactI18next)

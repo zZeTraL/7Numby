@@ -20,6 +20,11 @@ import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
 import CharacterInformation from "./routes/character/subRoutes/CharacterInformation.jsx";
 import Timeline from "./routes/timeline/Timeline.jsx";
+import Database from "./routes/database/Database.jsx";
+import Settings from "./routes/settings/Settings.jsx";
+import Calculator from "./routes/calculator/Calculator.jsx";
+import Counter from "./routes/warp/Counter.jsx";
+import Home from "./routes/home/Home.jsx";
 
 // Router
 const router = createBrowserRouter([
@@ -28,16 +33,36 @@ const router = createBrowserRouter([
         element: <Index/>,
         children: [
             {
+                path: "/",
+                element: <Home/>
+            },
+            {
                 path: "/characters",
                 element: <Character/>
             },
             {
                 path: "characters/:character",
-                element: <CharacterInformation />,
+                element: <CharacterInformation/>,
+            },
+            {
+                path: "warp",
+                element: <Counter/>,
+            },
+            {
+                path: "calculator",
+                element: <Calculator/>,
             },
             {
                 path: "timeline",
-                element: <Timeline />,
+                element: <Timeline/>,
+            },
+            {
+                path: "database",
+                element: <Database/>
+            },
+            {
+                path: "settings",
+                element: <Settings/>
             },
             {
                 path: "*",
@@ -47,7 +72,6 @@ const router = createBrowserRouter([
     },
 ]);
 
-// Register the Service Worker
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
     navigator.serviceWorker.register("/service-worker.js", {scope: '/'})
         .then((registration) => {

@@ -2,8 +2,9 @@
 const CACHE_NAME = '7Numby-b1.0.0';
 
 const urlsToCache = [
-    '/',
-    '/characters',
+    "./",
+    "./characters",
+    "./timeline",
 ];
 
 self.addEventListener('install', (event) => {

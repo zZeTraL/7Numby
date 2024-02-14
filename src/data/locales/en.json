@@ -2,7 +2,7 @@
   "sidebar": {
     "home": "Home",
     "characters": "Characters",
-    "wish_counter": "Wish Counter",
+    "warp_counter": "Warp Counter",
     "calculator": "Calculator",
     "timeline": "Timeline",
     "database": "Database",
@@ -18,14 +18,29 @@
   },
 
   "route": {
+    "home": {
+      "title": "Home"
+    },
     "characters": {
       "title": "Characters",
       "skills": "Skills",
       "eidolons": "Eidolons",
       "builds": "Builds"
     },
+    "warp_counter": {
+      "title": "Warp Counter"
+    },
+    "calculator": {
+      "title": "Calculator"
+    },
     "timeline": {
       "title": "Timeline"
+    },
+    "database": {
+      "title": "Database"
+    },
+    "settings": {
+      "title": "Settings"
     }
   },
 

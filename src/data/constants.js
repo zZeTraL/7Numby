@@ -11,9 +11,9 @@ export const sidebarLinks = [
         link: "/characters"
     },
     {
-        key: "sidebar.wish_counter",
+        key: "sidebar.warp_counter",
         icon: "DrawcardIcon",
-        link: "/wish"
+        link: "/warp"
     },
     {
         key: "sidebar.calculator",

@@ -2,10 +2,10 @@
   "sidebar": {
     "home": "Accueil",
     "characters": "Personnages",
-    "wish_counter": "Compteur de voeux",
+    "warp_counter": "Saut hyperespace",
     "calculator": "Calculatrice",
     "timeline": "Chronologie",
-    "database": "Base de données",
+    "database": "Database",
     "settings": "Paramètres"
   },
 
@@ -18,14 +18,29 @@
   },
 
   "route": {
+    "home": {
+      "title": "Accueil"
+    },
     "characters": {
       "title": "Personnages",
       "skills": "Compétences",
       "eidolons": "Eidolons",
       "builds": "Builds"
     },
+    "warp_counter": {
+      "title": "Compteur de saut hyperespace"
+    },
+    "calculator": {
+      "title": "Calculatrice"
+    },
     "timeline": {
       "title": "Chronologie"
+    },
+    "database": {
+      "title": "Database"
+    },
+    "settings": {
+      "title": "Paramètres"
     }
   },
 

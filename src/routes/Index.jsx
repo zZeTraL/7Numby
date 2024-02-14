@@ -19,7 +19,7 @@ const Index = () => {
             <Sidebar t={t}/>
             <main className="lg:ml-64 grow min-w-[calc(100vw-256px)]">
                 <div className="p-10 max-s:px-3 max-sm:px-4 max-sm:py-7">
-                    <Outlet />
+                    <Outlet/>
                 </div>
             </main>
             <Footer t={t}/>
