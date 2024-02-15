@@ -1,4 +1,5 @@
 import {paths, aeons, rarity, stars} from "./constants.js";
+import characterData from "./index_new/en/characters.json";
 
 // Getters
 export const getIconPathById = (id) => {
@@ -25,6 +26,13 @@ export const getRarityArrayByInt = (int) => {
     return result
 }
 
+export const getAllCharactersTag = () => {
+    let result = [];
+    Object.values(characterData).forEach((value) => {
+        result.push(value.tag);
+    })
+    return result;
+}
 
 
 /**

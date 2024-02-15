@@ -1,9 +1,6 @@
 import React, {useEffect, useReducer} from "react";
 import {Helmet} from "react-helmet";
-import {Link} from "react-router-dom";
-
-// Context
-import {useData} from "../../context/DataContext.jsx";
+import {Link, useLoaderData} from "react-router-dom";
 
 // i18n
 import {useTranslation} from "react-i18next";
@@ -69,11 +66,11 @@ const reducer = (state, action) => {
 const Character = () => {
     const [t, i18n] = useTranslation();
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
-    const characterData = useData().characters;
+    const characterData = useLoaderData();
 
     useEffect(() => {
         handleChoiceUpdate()
-    }, [characterData, state.filterOption]);
+    }, [state.filterOption]);
 
     const handleChoiceUpdate = (payload) => {
         if(payload) dispatch({ type: "UPDATE_CHOICE", payload });

@@ -1,13 +1,11 @@
 import React, {useState} from "react";
 import styled from "@emotion/styled";
 
-// Context
-import {useData} from "../../../context/DataContext.jsx";
-
 // Constants
 import {characterInformationHash} from "../../../data/constants.js";
 
 // Components
+import WIP from "../../../components/wip/WIP.jsx";
 import DisplayHistoryLinks from "../../../components/DisplayHistoryLinks.jsx";
 import Skill from "../../../components/Skill.jsx";
 
@@ -23,10 +21,13 @@ import {
     getAeonByPath,
     getRarityArrayByInt, getCharacterByName
 } from "../../../data/utils.js";
-import WIP from "../../../components/wip/WIP.jsx";
+import {useLoaderData} from "react-router-dom";
 
 // Styled components
 const StyledBtn = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     position: relative;
     transition: all ease-in 500ms;
     overflow: hidden;
@@ -59,29 +60,21 @@ const StyledBtn = styled.div`
 const CharacterInformation = () => {
     const {t, i18n} = useTranslation();
     const [currentModal, setCurrentModal] = useState(characterInformationHash[window.location.hash] || "skills");
-    const data = useData();
+    const data = useLoaderData();
 
     const path = window.location.pathname.split("/")[2];
-    const character = getCharacterByName(path, data.characters) || {};
-    let skills = getCharacterSkills(character.skills || [], data.characterSkills);
+    const character = getCharacterByName(path, data.characters);
+    const skills = getCharacterSkills(character.skills, data.characterSkills);
 
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
 
-    console.log(character)
+    //console.log(character, skills, aeon, stars)
 
     const handleModalState = (modal) => {
         if(modal === currentModal) return;
         setCurrentModal(modal);
         window.location.hash = modal;
-    }
-
-    if(data.characters.length === 0) {
-        return (
-            <div className="flex flex-col items-center justify-center">
-                <p className="text-2xl font-semibold">Loading...</p>
-            </div>
-        )
     }
 
     return (
@@ -145,19 +138,27 @@ const CharacterInformation = () => {
                             }}
                         />
                     </div>
-                    <div className="flex flex-row gap-8 max-2xl:flex-col max-2xl:items-center md:px-32 my-12 w-full relative">
-                        <div className="absolute -translate-x-12 top-[50%] w-64 left-0 border-b-2 border-dotted"></div>
+                    <div className="flex flex-row justify-center gap-8 max-2xl:flex-col max-2xl:items-center md:px-32 my-12 w-full relative">
+                        <div className="absolute max-md:hidden -translate-x-12 top-[50%] w-64 left-0 border-b-2 border-dotted"></div>
                         <StyledBtn
                             current={currentModal === "skills"}
-                            className="flex flex-row items-center px-8 w-64 h-16 rounded-xl bg-darkBg"
+                            className="px-4 w-64 h-16 rounded-xl bg-darkBg"
                             onClick={() => {handleModalState("skills")}}
                         >
                             <span className="text-lg tracking-wider z-10">{t("route.characters.skills")}</span>
                             <img className="absolute blur-[2px] -right-2 w-28 opacity-25" src={"./hsr/icon/item/252.png"} alt="Skills"/>
                         </StyledBtn>
                         <StyledBtn
+                            current={currentModal === "traces"}
+                            className="px-4 w-64 h-16 rounded-xl bg-darkBg"
+                            onClick={() => {handleModalState("traces")}}
+                        >
+                            <span className="text-lg tracking-wider">{t("route.characters.traces")}</span>
+                            <img className="absolute blur-[2px] -right-2 w-26" src={"./hsr/icon/item/241.png"} alt="Traces"/>
+                        </StyledBtn>
+                        <StyledBtn
                             current={currentModal === "eidolons"}
-                            className="flex flex-row items-center px-8 w-64 h-16 rounded-xl bg-darkBg"
+                            className="px-4 w-64 h-16 rounded-xl bg-darkBg"
                             onClick={() => {handleModalState("eidolons")}}
                         >
                             <span className="text-lg tracking-wider">{t("route.characters.eidolons")}</span>
@@ -165,7 +166,7 @@ const CharacterInformation = () => {
                         </StyledBtn>
                         <StyledBtn
                             current={currentModal === "builds"}
-                            className="flex flex-row items-center px-8 w-64 h-16 rounded-xl bg-darkBg"
+                            className="px-4 w-64 h-16 rounded-xl bg-darkBg"
                             onClick={() => {handleModalState("builds")}}
                         >
                             <span className="text-lg tracking-wider">{t("route.characters.builds")}</span>
@@ -185,6 +186,12 @@ const CharacterInformation = () => {
                                     })
                                 }
                             </div>
+                        )
+                    }
+                    {
+                        currentModal === "traces" &&
+                        (
+                            <WIP title="WIP" />
                         )
                     }
                     {

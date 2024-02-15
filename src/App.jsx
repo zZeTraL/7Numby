@@ -1,9 +1,6 @@
-import React, {Suspense} from "react";
+import React from "react";
 import {createRoot} from "react-dom/client";
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-
-// Provider
-import {DataContextProvider} from "./context/DataContext.jsx";
+import {createBrowserRouter, redirect, RouterProvider} from "react-router-dom";
 
 // i18n language support
 import './i18n.js';
@@ -14,7 +11,6 @@ import {I18nextProvider} from "react-i18next";
 import "./App.css";
 
 // Components
-import {Analytics} from "@vercel/analytics/react";
 import Index from "./routes/Index.jsx";
 import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
@@ -25,6 +21,11 @@ import Settings from "./routes/settings/Settings.jsx";
 import Calculator from "./routes/calculator/Calculator.jsx";
 import Counter from "./routes/warp/Counter.jsx";
 import Home from "./routes/home/Home.jsx";
+import {getAllCharactersTag} from "./data/utils.js";
+import {fetchData, fetchMultipleData} from "./data/request.js";
+
+// Data
+const tags = getAllCharactersTag();
 
 // Router
 const router = createBrowserRouter([
@@ -34,15 +35,28 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <Home/>
+                element: <Home/>,
             },
             {
                 path: "/characters",
-                element: <Character/>
+                element: <Character/>,
+                loader: async () => {
+                    return await fetchData("characters");
+                }
             },
             {
                 path: "characters/:character",
                 element: <CharacterInformation/>,
+                loader: async ({params}) => {
+                    if(!tags.includes(params.character)) return redirect("/");
+                    // Load character related data
+                    const result = await fetchMultipleData(["characters", "character_skills", "character_ranks"]);
+                    return {
+                        characters: result[0],
+                        characterSkills: result[1],
+                        characterRanks: result[2],
+                    };
+                }
             },
             {
                 path: "warp",
@@ -84,8 +98,6 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
 
 createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>
-        <DataContextProvider>
-            <RouterProvider router={router}/>
-        </DataContextProvider>
+        <RouterProvider router={router}/>
     </I18nextProvider>
 );

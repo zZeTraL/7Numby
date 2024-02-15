@@ -39,6 +39,7 @@ export const sidebarLinks = [
 
 export const characterInformationHash = {
     "#skills": "skills",
+    "#traces": "traces",
     "#eidolons": "eidolons",
     "#builds": "builds"
 }

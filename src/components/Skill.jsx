@@ -37,25 +37,20 @@ const Skill = ({skill}) => {
         setParts(updatedParts);
     }, [skill.desc, level]);
 
-    // TODO: REFACTOR THIS
-    const handleState = () => {
-        console.log(skill.max_level)
+    const handleState = (value = 1) => {
+        let levelLimit;
+        if(level === 0 && value === -1) return;
         switch (skill.type) {
             case "Normal":
-                setLevel(level === 8 ? 0 : level + 1)
+                levelLimit = 8;
                 break;
-            case "BPSkill":
-                setLevel(level === 14 ? 0 : level + 1)
-                break;
-            case "Ultra":
-                setLevel(level === 14 ? 0 : level + 1)
-                break;
-            case "Talent":
-                setLevel(level === 14 ? 0 : level + 1)
+            case "BPSkill": case "Ultra": case "Talent":
+                levelLimit = 14;
                 break;
             default:
-                break;
+                return;
         }
+        setLevel(level === levelLimit ? 0 : level + value);
     }
 
     return (
@@ -80,17 +75,27 @@ const Skill = ({skill}) => {
                             })
                         }
                     </span>
-                    <div className="mt-8 flex flex-row justify-center">
-                        <span
+                    <div className="mt-8 flex flex-row justify-center items-center gap-3">
+                        <button
+                            className="text-md opacity-65 hover:cursor-pointer"
+                            onClick={() => {handleState(-1)}}
+                        >
+                            -
+                        </button>
+                        <button
                             className="text-xs ease-in duration-300 hover:cursor-pointer hover:text-gg"
                             onClick={() => {handleState()}}
                         >
                             Lv. {level + 1}
-                        </span>
+                        </button>
+                        <button
+                            className="text-md opacity-65 hover:cursor-pointer"
+                            onClick={() => {handleState()}}
+                        >
+                            +
+                        </button>
                     </div>
                 </div>
-
-
             </div>
         </>
     )

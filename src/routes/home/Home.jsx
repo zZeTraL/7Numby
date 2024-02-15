@@ -9,7 +9,6 @@ import DisplayHistoryLinks from "../../components/DisplayHistoryLinks.jsx";
 
 const Home = () => {
     const [t, i18n] = useTranslation();
-
     return (
         <div className="flex flex-col gap-4">
             <Helmet>

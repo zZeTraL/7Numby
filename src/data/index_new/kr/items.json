@@ -13753,7 +13753,7 @@
     },
     "223308": {
         "id": "223308",
-        "name": "미스터 스톤",
+        "name": "Mr. 스톤",
         "type": "Usable",
         "sub_type": "TravelBrochurePaster",
         "rarity": 4,
@@ -18171,7 +18171,7 @@
     },
     "408613": {
         "id": "408613",
-        "name": "피카 샴페인",
+        "name": "피카 백포도 소다수",
         "type": "Usable",
         "sub_type": "Food",
         "rarity": 3,

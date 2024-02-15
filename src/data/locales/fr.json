@@ -24,6 +24,7 @@
     "characters": {
       "title": "Personnages",
       "skills": "Compétences",
+      "traces": "Traces",
       "eidolons": "Eidolons",
       "builds": "Builds"
     },
