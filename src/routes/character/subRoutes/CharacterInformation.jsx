@@ -63,6 +63,7 @@ const CharacterInformation = () => {
     const [currentModal, setCurrentModal] = useState(characterInformationHash[window.location.hash] || "skills");
     const data = useOutletContext();
 
+
     const path = window.location.pathname.split("/")[2];
     const character = getCharacterByName(path, data.characters);
     const skills = getCharacterSkills(character.skills, data.character_skills);
@@ -70,6 +71,8 @@ const CharacterInformation = () => {
 
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
+
+    console.log(ranks);
 
     const handleModalState = (modal) => {
         if(modal === currentModal) return;
