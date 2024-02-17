@@ -2,6 +2,9 @@ import React from "react";
 import {createRoot} from "react-dom/client";
 import {createBrowserRouter, redirect, RouterProvider} from "react-router-dom";
 
+// Data context
+import {DataProvider} from "./context/DataContext.jsx";
+
 // i18n language support
 import './i18n.js';
 import i18next from "i18next";
@@ -11,6 +14,7 @@ import {I18nextProvider} from "react-i18next";
 import "./App.css";
 
 // Components
+import {Analytics} from "@vercel/analytics/react";
 import Index from "./routes/Index.jsx";
 import WIP from "./components/wip/WIP.jsx";
 import Character from "./routes/character/Character.jsx";
@@ -22,7 +26,6 @@ import Calculator from "./routes/calculator/Calculator.jsx";
 import Counter from "./routes/warp/Counter.jsx";
 import Home from "./routes/home/Home.jsx";
 import {getAllCharactersTag} from "./data/utils.js";
-import {fetchData, fetchMultipleData} from "./data/request.js";
 
 // Data
 const tags = getAllCharactersTag();
@@ -31,7 +34,7 @@ const tags = getAllCharactersTag();
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Index/>,
+        element: <Index />,
         children: [
             {
                 path: "/",
@@ -40,22 +43,13 @@ const router = createBrowserRouter([
             {
                 path: "/characters",
                 element: <Character/>,
-                loader: async () => {
-                    return await fetchData("characters");
-                }
             },
             {
                 path: "characters/:character",
-                element: <CharacterInformation/>,
+                element: <CharacterInformation />,
                 loader: async ({params}) => {
                     if(!tags.includes(params.character)) return redirect("/");
-                    // Load character related data
-                    const result = await fetchMultipleData(["characters", "character_skills", "character_ranks"]);
-                    return {
-                        characters: result[0],
-                        characterSkills: result[1],
-                        characterRanks: result[2],
-                    };
+                    return null;
                 }
             },
             {
@@ -80,7 +74,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "*",
-                element: <WIP title="WIP"/>
+                element: <Home/>
             }
         ]
     },
@@ -98,6 +92,9 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
 
 createRoot(document.getElementById("root")).render(
     <I18nextProvider i18n={i18next}>
-        <RouterProvider router={router}/>
+        <DataProvider>
+            <RouterProvider router={router}/>
+            {import.meta.env.PROD && <Analytics/>}
+        </DataProvider>
     </I18nextProvider>
 );

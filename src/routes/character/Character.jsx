@@ -1,6 +1,6 @@
 import React, {useEffect, useReducer} from "react";
 import {Helmet} from "react-helmet";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useOutletContext} from "react-router-dom";
 
 // i18n
 import {useTranslation} from "react-i18next";
@@ -66,15 +66,15 @@ const reducer = (state, action) => {
 const Character = () => {
     const [t, i18n] = useTranslation();
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
-    const characterData = useLoaderData();
+    const data = useOutletContext();
 
     useEffect(() => {
         handleChoiceUpdate()
-    }, [state.filterOption]);
+    }, [data, state.filterOption]);
 
     const handleChoiceUpdate = (payload) => {
         if(payload) dispatch({ type: "UPDATE_CHOICE", payload });
-        dispatch({ type: "UPDATE_FILTERED_CHARACTER", payload: characterData });
+        dispatch({ type: "UPDATE_FILTERED_CHARACTER", payload: data.characters });
     };
 
     return (

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import styled from "@emotion/styled";
+import {useOutletContext} from "react-router-dom";
 
 // Constants
 import {characterInformationHash} from "../../../data/constants.js";
@@ -19,9 +20,9 @@ import {
     getCharacterSkills,
     getIconPathById,
     getAeonByPath,
-    getRarityArrayByInt, getCharacterByName
+    getRarityArrayByInt, getCharacterByName, getCharacterRanks
 } from "../../../data/utils.js";
-import {useLoaderData} from "react-router-dom";
+import Eidolons from "../../../components/modal/Eidolons.jsx";
 
 // Styled components
 const StyledBtn = styled.div`
@@ -60,16 +61,15 @@ const StyledBtn = styled.div`
 const CharacterInformation = () => {
     const {t, i18n} = useTranslation();
     const [currentModal, setCurrentModal] = useState(characterInformationHash[window.location.hash] || "skills");
-    const data = useLoaderData();
+    const data = useOutletContext();
 
     const path = window.location.pathname.split("/")[2];
     const character = getCharacterByName(path, data.characters);
-    const skills = getCharacterSkills(character.skills, data.characterSkills);
+    const skills = getCharacterSkills(character.skills, data.character_skills);
+    const ranks = getCharacterRanks(character.ranks, data.character_ranks)
 
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
-
-    //console.log(character, skills, aeon, stars)
 
     const handleModalState = (modal) => {
         if(modal === currentModal) return;
@@ -106,7 +106,7 @@ const CharacterInformation = () => {
 
                 <div className="flex flex-col px-12 py-6 z-10 h-full">
                     <div className="flex justify-center relative">
-                        <img className="absolute translate-y-12 opacity-10 w-[768px] -z-10" src={"./hsr/image/simulated_event/" + aeon.tag + ".png"} alt={aeon.title}/>
+                        <img loading="lazy" className="absolute translate-y-12 opacity-10 w-[768px] -z-10" src={"./hsr/image/simulated_event/" + aeon.tag + ".png"} alt={aeon.title}/>
                     </div>
                     <div className="flex flex-col gap-4">
                         <h1 className="text-4xl font-semibold tracking-wide">{character.name}</h1>
@@ -128,6 +128,7 @@ const CharacterInformation = () => {
                     <div className="flex justify-center">
                         <img
                             className="w-[768px] ease-in-out duration-500 hover:cursor-pointer"
+                            loading="lazy"
                             src={"./hsr/" + character.portrait} alt={character.name}
                             onClick={(event) => {
                                 if(event.target.style.width === "1024px") {
@@ -197,7 +198,7 @@ const CharacterInformation = () => {
                     {
                         currentModal === "eidolons" &&
                         (
-                            <WIP title="WIP" />
+                            <Eidolons data={ranks}/>
                         )
                     }
                     {

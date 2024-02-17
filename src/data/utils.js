@@ -73,6 +73,22 @@ export const getCharacterByName = (name, data) => {
     return result;
 }
 
+export const getCharacterRanks = (array, data) => {
+    if(array.length === 0) return undefined;
+    if(data === undefined) return undefined;
+    let result = []
+    Object.values(data).forEach((value) => {
+        for (const id of array) {
+            if(value.id === id) {
+                result.push(value);
+            }
+        }
+    })
+    //console.info(result);
+    return result;
+
+}
+
 export const getDefaultLevel = (skill) => {
     let type = skill.type;
     switch (type) {
