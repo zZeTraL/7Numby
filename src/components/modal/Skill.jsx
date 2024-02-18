@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {getDefaultLevel, getParamsByLevel} from "../data/utils.js";
+import {getDefaultLevel, getParamsByLevel} from "../../data/utils.js";
 
 const Skill = ({skill}) => {
     const [parts, setParts] = useState([]);

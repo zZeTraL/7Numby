@@ -1,5 +1,6 @@
 import {paths, aeons, rarity, stars} from "./constants.js";
 import characterData from "./index_new/en/characters.json";
+import React from "react";
 
 // Getters
 export const getIconPathById = (id) => {

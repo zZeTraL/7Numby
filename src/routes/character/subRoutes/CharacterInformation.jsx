@@ -8,7 +8,7 @@ import {characterInformationHash} from "../../../data/constants.js";
 // Components
 import WIP from "../../../components/wip/WIP.jsx";
 import DisplayHistoryLinks from "../../../components/DisplayHistoryLinks.jsx";
-import Skill from "../../../components/Skill.jsx";
+import Skill from "../../../components/modal/Skill.jsx";
 
 // i18n
 import {useTranslation} from "react-i18next";
@@ -22,7 +22,7 @@ import {
     getAeonByPath,
     getRarityArrayByInt, getCharacterByName, getCharacterRanks
 } from "../../../data/utils.js";
-import Eidolons from "../../../components/modal/Eidolons.jsx";
+import Eidolon from "../../../components/modal/Eidolon.jsx";
 
 // Styled components
 const StyledBtn = styled.div`
@@ -72,7 +72,7 @@ const CharacterInformation = () => {
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
 
-    console.log(ranks);
+    console.log(character.id);
 
     const handleModalState = (modal) => {
         if(modal === currentModal) return;
@@ -166,7 +166,7 @@ const CharacterInformation = () => {
                             onClick={() => {handleModalState("eidolons")}}
                         >
                             <span className="text-lg tracking-wider">{t("route.characters.eidolons")}</span>
-                            <img className="absolute blur-[2px] -right-2 w-28" src={"./hsr/icon/item/261.png"} alt="Eidolons"/>
+                            <img className="absolute blur-[2px] -right-2 w-28" src={"./hsr/icon/item/261.png"} alt="Eidolon"/>
                         </StyledBtn>
                         <StyledBtn
                             current={currentModal === "builds"}
@@ -201,13 +201,30 @@ const CharacterInformation = () => {
                     {
                         currentModal === "eidolons" &&
                         (
-                            <Eidolons data={ranks}/>
+                            <div className="my-12 mx-32 grid xl:grid-cols-2 md:grid-cols-1 gap-8">
+                                {
+                                    ranks.map((rank, index) => {
+                                        return (
+                                            <Eidolon key={index} rank={rank}/>
+                                        )
+                                    })
+                                }
+                            </div>
                         )
                     }
                     {
                         currentModal === "builds" &&
                         (
-                            <WIP title="WIP" />
+                            <WIP title="Not available right now" desc={
+                                <a target="_blank"
+                                   href="https://www.prydwen.gg/star-rail/characters"
+                                   className="text-sm tracking-wider max-w-lg"
+                                >
+                                    Instead I recommend you to visit
+                                    <span className="text-gg"> prydwen </span>
+                                    for quite interesting builds for each character.
+                                </a>}
+                            />
                         )
                     }
                 </div>
