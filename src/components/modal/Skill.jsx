@@ -26,7 +26,6 @@ const Skill = ({skill}) => {
                 let value = param[num - 1]
                 if(text.includes("%")) {
                     value *= 100;
-                    // Use a ternary operator to format the value as a percentage
                     value = `${value % 1 === 0 ? value.toFixed(0) : value.toFixed(1)}%`;
                 }
                 accumulator.push(str.trim(), <span className="text-7"> {value} </span>);

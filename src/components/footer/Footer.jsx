@@ -29,7 +29,7 @@ const Footer = ({t}) => {
                                 <FaDiscord className="text-2xl hover:cursor-pointer"/> Discord
                             </a>
                             <a className="flex gap-2 no-underline text-white items-center hover:text-gg" href="https://classNameitter.com/HonkaiStarRail" target="_blank" rel="noreferrer">
-                                <FaTwitter  className="text-2xl hover:cursor-pointer"/> Twiiter
+                                <FaTwitter  className="text-2xl hover:cursor-pointer"/> Twitter
                             </a>
                             <a className="flex gap-2 no-underline text-white items-center hover:text-gg" href="https://reddit.com/r/HonkaiStarRail/" target="_blank" rel="noreferrer">
                                 <FaReddit className="text-2xl hover:cursor-pointer"/> Reddit
