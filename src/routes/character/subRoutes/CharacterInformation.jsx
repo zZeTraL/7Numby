@@ -72,8 +72,6 @@ const CharacterInformation = () => {
     const aeon = getAeonByPath(character.path);
     const stars = getRarityArrayByInt(character.rarity);
 
-    console.log(character.id);
-
     const handleModalState = (modal) => {
         if(modal === currentModal) return;
         setCurrentModal(modal);
@@ -109,7 +107,8 @@ const CharacterInformation = () => {
 
                 <div className="flex flex-col px-12 py-6 z-10 h-full">
                     <div className="flex justify-center relative">
-                        <img loading="lazy" className="absolute translate-y-12 opacity-10 w-[768px] -z-10" src={"./hsr/image/simulated_event/" + aeon.tag + ".png"} alt={aeon.title}/>
+                        <img loading="lazy" className="absolute translate-y-12 opacity-10 w-[768px] -z-10"
+                             src={"./hsr/image/simulated_event/" + aeon.tag + ".png"} alt={aeon.title}/>
                     </div>
                     <div className="flex flex-col gap-4">
                         <h1 className="text-4xl font-semibold tracking-wide">{character.name}</h1>
@@ -134,7 +133,7 @@ const CharacterInformation = () => {
                             loading="lazy"
                             src={"./hsr/" + character.portrait} alt={character.name}
                             onClick={(event) => {
-                                if(event.target.style.width === "1024px") {
+                                if (event.target.style.width === "1024px") {
                                     event.target.style.width = "768px";
                                 } else {
                                     event.target.style.width = "1024px";
@@ -142,8 +141,10 @@ const CharacterInformation = () => {
                             }}
                         />
                     </div>
-                    <div className="flex flex-row justify-center gap-8 max-2xl:flex-col max-2xl:items-center md:px-32 my-12 w-full relative">
-                        <div className="absolute max-md:hidden -translate-x-12 top-[50%] w-64 left-0 border-b-2 border-dotted"></div>
+                    <div
+                        className="flex flex-row justify-center gap-8 max-2xl:flex-col max-2xl:items-center md:px-32 my-12 w-full relative">
+                        <div
+                            className="absolute max-md:hidden -translate-x-12 top-[50%] w-64 left-0 border-b-2 border-dotted"></div>
                         <StyledBtn
                             current={currentModal === "skills"}
                             className="px-4 w-64 h-16 rounded-xl bg-darkBg"

@@ -1,5 +1,6 @@
 import React, {Fragment} from "react";
 import styled from "@emotion/styled";
+import * as path from "path";
 
 const StyledEidolonImage = styled.img`
     transition: all ease-in 400ms;
@@ -15,54 +16,34 @@ const StyledEidolonImage = styled.img`
 let availableEidolons = ["10010", "13070"]
 
 function processEidolonText(text){
-    let originalTextSplit = text.split(" ");
-
-    for (const word of originalTextSplit) {
-        // if part contain \\ replace it with a line break
-        if(word.includes("\\")){
-            let toSplit = word.replace("\\n", " LineBreak ").split(" ");
-            // replace the original word with the new split
-            let index = originalTextSplit.indexOf(word);
-            originalTextSplit.splice(index, 1, ...toSplit);
-        }
-    }
+    let originalTextSplit = text.split(" ").map(word => {
+        return word.includes("\\") ? word.replace("\\n", " LineBreak ").split(" ") : word;
+    }).flat();
 
     let str = "";
     return originalTextSplit.reduce((accumulator, word, index) => {
         if (word.includes("LineBreak")) {
-            // If it's a line break, push the string and the line break
             accumulator.push(str.trim(), <br/>);
             str = "";
+        } else if(word.includes("+") || !isNaN(word) || word.includes("%")){
+            accumulator.push(str.trim(), <span className="text-7"> {word} </span>);
+            str = "";
         } else {
-            // check if the word contains a number
-            if(word.includes("+") || !isNaN(word) || word.includes("%")){
-                accumulator.push(str.trim(), <span className="text-7"> {word} </span>);
-                str = "";
-            } else {
-                str += word + " ";
-                // If it's the last element, push the string
-                if (index === originalTextSplit.length - 1) accumulator.push(str.trim());
-            }
+            str += word + " ";
+            if (index === originalTextSplit.length - 1) accumulator.push(str.trim());
         }
         return accumulator;
     }, []);
 }
 
+function getEidolonImageURL(id){
+    return availableEidolons.includes(id.slice(0, -1)) ? `./hsr/image/eidolons/${id}.webp` : `./hsr/image/eidolons/130701.webp`;
+}
+
 const Eidolon = ({rank}) => {
 
-    // TODO: Need to remove it when I've added each eidolons images to the project
-    let eidolonImageURL = "";
-
-    // if rank.id corresponds to 13070 without the X, then it's a special case
-    // delete the last digi
-    if(availableEidolons.includes(rank.id.slice(0, -1))){
-        eidolonImageURL = `./hsr/image/eidolons/${rank.id}.webp`;
-    } else {
-        eidolonImageURL = `./hsr/image/eidolons/130701.webp`;
-    }
-
-    let test = processEidolonText(rank.desc)
-    console.log(test);
+    let eidolonImageURL = getEidolonImageURL(rank.id);
+    let desc = processEidolonText(rank.desc)
 
     return (
         <div className="flex flex-row items-center gap-4 bg-darkBg rounded-xl p-4">
@@ -71,7 +52,7 @@ const Eidolon = ({rank}) => {
                 <h2 className="text-md font-semibold tracking-wide leading-5">{rank.name}</h2>
                 <span className="text-sm tracking-tighter">
                     {
-                        test.map((part, index) => {
+                        desc.map((part, index) => {
                             return (
                                 <Fragment key={index}>
                                     {part}

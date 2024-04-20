@@ -67,6 +67,8 @@ const Character = () => {
     const [t, i18n] = useTranslation();
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const data = useOutletContext();
+    console.log(data)
+
 
     useEffect(() => {
         handleChoiceUpdate()
